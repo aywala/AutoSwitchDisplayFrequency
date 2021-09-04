@@ -2,12 +2,6 @@
 #include <Windows.h>
 #define _WIN32_WINN 0x0400
 using namespace std;
-LRESULT CALLBACK WindowProc(
-    HWND   hwnd,    // handle to window
-    UINT   uMsg,    // WM_POWERBROADCAST
-    WPARAM wParam,  // power-management event
-    LPARAM lParam   // function-specific data
-);
 
 #pragma   comment(linker,   "/subsystem:\"windows\"  /entry:\"mainCRTStartup\" ") // 隐藏命令行窗口
 int main()
