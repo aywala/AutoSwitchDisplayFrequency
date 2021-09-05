@@ -3,7 +3,7 @@
 #define _WIN32_WINN 0x0400
 using namespace std;
 
-//#pragma   comment(linker,   "/subsystem:\"windows\"  /entry:\"mainCRTStartup\" ") // 隐藏命令行窗口
+#pragma   comment(linker,   "/subsystem:\"windows\"  /entry:\"mainCRTStartup\" ") // 隐藏命令行窗口
 int main()
 {
     DEVMODE devMode;
