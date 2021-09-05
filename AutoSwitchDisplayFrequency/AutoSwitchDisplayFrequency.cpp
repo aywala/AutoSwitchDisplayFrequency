@@ -3,7 +3,7 @@
 #define _WIN32_WINN 0x0400
 using namespace std;
 
-#pragma   comment(linker,   "/subsystem:\"windows\"  /entry:\"mainCRTStartup\" ") // 隐藏命令行窗口
+//#pragma   comment(linker,   "/subsystem:\"windows\"  /entry:\"mainCRTStartup\" ") // 隐藏命令行窗口
 int main()
 {
     DEVMODE devMode;
@@ -15,14 +15,14 @@ int main()
         devMode.dmDisplayFrequency = 60;
         devMode.dmFields = DM_DISPLAYFREQUENCY;
         devMode.dmSize = sizeof(devMode);
-        if (ChangeDisplaySettings(&devMode, 0) == DISP_CHANGE_SUCCESSFUL)
+        if (ChangeDisplaySettings(&devMode, CDS_UPDATEREGISTRY) == DISP_CHANGE_SUCCESSFUL)
             cout << "已更改刷新率为:" << devMode.dmDisplayFrequency << endl;
     }
     else if (last_status == 1 && devMode.dmDisplayFrequency == 60) {// 若电源已接通且帧率为60，则改帧率为165
         devMode.dmDisplayFrequency = 165;
         devMode.dmFields = DM_DISPLAYFREQUENCY;
         devMode.dmSize = sizeof(devMode);
-        if (ChangeDisplaySettings(&devMode, 0) == DISP_CHANGE_SUCCESSFUL)
+        if (ChangeDisplaySettings(&devMode, CDS_UPDATEREGISTRY) == DISP_CHANGE_SUCCESSFUL)
             cout << "已更改刷新率为:" << devMode.dmDisplayFrequency << endl;
     }
     while (1) {
@@ -34,14 +34,14 @@ int main()
                 devMode.dmDisplayFrequency = 60;
                 devMode.dmFields = DM_DISPLAYFREQUENCY;
                 devMode.dmSize = sizeof(devMode);
-                if(ChangeDisplaySettings(&devMode, 0)== DISP_CHANGE_SUCCESSFUL)
+                if(ChangeDisplaySettings(&devMode, CDS_UPDATEREGISTRY)== DISP_CHANGE_SUCCESSFUL)
                     cout << "已更改刷新率为:" << devMode.dmDisplayFrequency << endl;
             }
             else if (status == 1 && devMode.dmDisplayFrequency == 60) {// 若电源已接通且帧率为60，则改帧率为165
                 devMode.dmDisplayFrequency = 165;
                 devMode.dmFields = DM_DISPLAYFREQUENCY;
                 devMode.dmSize = sizeof(devMode);
-                if (ChangeDisplaySettings(&devMode, 0) == DISP_CHANGE_SUCCESSFUL)
+                if (ChangeDisplaySettings(&devMode, CDS_UPDATEREGISTRY) == DISP_CHANGE_SUCCESSFUL)
                     cout << "已更改刷新率为:" << devMode.dmDisplayFrequency << endl;
             }
             last_status = status;
