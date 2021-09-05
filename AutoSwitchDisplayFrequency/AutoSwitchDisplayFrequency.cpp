@@ -10,11 +10,26 @@ int main()
     LPSYSTEM_POWER_STATUS lpSystemPowerStatus = new SYSTEM_POWER_STATUS;
     GetSystemPowerStatus(lpSystemPowerStatus);
     BYTE last_status = lpSystemPowerStatus->ACLineStatus;
+    EnumDisplaySettings(NULL, ENUM_CURRENT_SETTINGS, &devMode);
+    if (last_status == 0 && devMode.dmDisplayFrequency == 165) {// 若电源已断开且帧率为165，则改帧率为60
+        devMode.dmDisplayFrequency = 60;
+        devMode.dmFields = DM_DISPLAYFREQUENCY;
+        devMode.dmSize = sizeof(devMode);
+        if (ChangeDisplaySettings(&devMode, 0) == DISP_CHANGE_SUCCESSFUL)
+            cout << "已更改刷新率为:" << devMode.dmDisplayFrequency << endl;
+    }
+    else if (last_status == 1 && devMode.dmDisplayFrequency == 60) {// 若电源已接通且帧率为60，则改帧率为165
+        devMode.dmDisplayFrequency = 165;
+        devMode.dmFields = DM_DISPLAYFREQUENCY;
+        devMode.dmSize = sizeof(devMode);
+        if (ChangeDisplaySettings(&devMode, 0) == DISP_CHANGE_SUCCESSFUL)
+            cout << "已更改刷新率为:" << devMode.dmDisplayFrequency << endl;
+    }
     while (1) {
-        EnumDisplaySettings(NULL, ENUM_CURRENT_SETTINGS, &devMode);
         GetSystemPowerStatus(lpSystemPowerStatus);
         BYTE status = lpSystemPowerStatus->ACLineStatus;// AC电源连接状态，1为已连接，0为已断开
         if (status!=last_status) {// 仅当电源连接状态发生改变时才自动改变帧率
+            EnumDisplaySettings(NULL, ENUM_CURRENT_SETTINGS, &devMode);
             if (status == 0 && devMode.dmDisplayFrequency == 165) {// 若电源已断开且帧率为165，则改帧率为60
                 devMode.dmDisplayFrequency = 60;
                 devMode.dmFields = DM_DISPLAYFREQUENCY;
@@ -29,8 +44,8 @@ int main()
                 if (ChangeDisplaySettings(&devMode, 0) == DISP_CHANGE_SUCCESSFUL)
                     cout << "已更改刷新率为:" << devMode.dmDisplayFrequency << endl;
             }
+            last_status = status;
         }
-        last_status = status;
         Sleep(1000);
     }
 }
